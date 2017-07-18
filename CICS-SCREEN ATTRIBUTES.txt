@@ -1,0 +1,290 @@
+Application Programming ReferenceApplication Programming Reference
+
+
+
+      
+
+
+
+Field attributes and printer control characters
+The standard list DFHBMSCA simplifies the provision of field attributes and 
+printer control characters. Table 26 lists the symbolic names for the various 
+combinations of attributes and control characters. If you need combinations 
+other than those listed, you must generate them separately. 
+"Bit map of attributes" shows a bit map of attributes to help you do this. 
+Attributes and orders can be set only by their constant names or by their 
+associated graphic values (for example, "A" for unprotected and Modified Data 
+Tag (MDT) set). 
+You can get the standard attribute and printer character control list by 
+including the DFHBMSCA copybook in your application program. 
+  For COBOL users, it consists of an 01 statement and a set of 02 statements 
+  that must be copied into the working storage section, as follows: 
+COPY DFHBMSCA
+
+  For C or C++users, it consists of a series of defined constants that are 
+  included in the application program as follows: 
+#include <dfhbmsca.h>
+
+  For PL/I users, it consists of DECLARE statements defining elementary 
+  character variables as follows: 
+%include DFHBMSCA;
+
+You must use the symbolic name DFHDFT in the application structure to override a 
+map attribute with the default. On the other hand, to specify default values in 
+a Set Attribute (SA) sequence in text build, you should use the symbolic names 
+DFHDFCOL, DFHBASE, or DFHDFHI. Note:CICS on Open Systems and CICS for 
+      Windows NT do not support selector pen detection. 
+
+
+Table 26. Standard Attribute and Printer Control Character List, DFHBMSCA
+      Constant Meaning 
+      DFHBMPEM Printer end-of-message 
+      DFHBMPNL Printer new-line 
+      DFHBMASK Autoskip 
+      DFHBMUNP Unprotected 
+      DFHBMUNN Unprotected and numeric 
+      DFHBMPRO Protected 
+      DFHBMBRY Bright 
+      DFHBMDAR Dark 
+      DFHBMFSE Modified Data Tag (MDT) set 
+      DFHBMPRF Protected and MDT set 
+      DFHBMASF Autoskip and MDT set 
+      DFHBMASB Autoskip and bright 
+      DFHBMPSO Shift-out value, 0E 
+      DFHBMPSI Shift-in value, 0F 
+      DFHBMEOF Field erased 
+      DFHBMDET (3) Field detected 
+      DFHSA (2) Set Attribute (SA) order 
+      DFHERROR Error code 
+      DFHCOLOR (2) Color 
+      DFHPS (2) Programmed symbols 
+      DFHHLT (2) Highlight 
+      DFH3270 (2) Base 3270 field attribute 
+      DFHVAL (3) Validation 
+      DFHOUTLN (3) Field outlining attribute code 
+      DFHBKTRN (3) Background transparency attribute code 
+      DFHALL . Reset all to defaults 
+      DFHDFT Default 
+      DFHDFCOL (2) Default color 
+      DFHBLUE Blue 
+      DFHRED Red 
+      DFHPINK Pink 
+      DFHGREEN Green 
+      DFHTURQ Turquoise 
+      DFHYELLO Yellow 
+      DFHNEUTR Neutral color 
+      DFHBASE (2) Base programmed symbols 
+      DFHDFHI (2) Normal 
+      DFHBLINK Blink 
+      DFHREVRS Reverse video 
+      DFHUNDLN Underscore 
+      DFHMFIL (3) Mandatory fill 
+      DFHMENT (3) Mandatory enter 
+      DFHMFE (3) Mandatory fill and mandatory enter 
+      DFHMT (3) Trigger 
+      DFHMFT (3) Mandatory fill and trigger 
+      DFHMET (3) Mandatory enter and trigger 
+      DFHUNNOD Unprotected, non-display, non-print, nondetectable, MDT 
+      DFHUNIMD Unprotected, intensify, detectable, MDT 
+      DFHUNNUM Unprotected, numeric, MDT 
+      DFHUNINT Unprotected, numeric, intensify, detectable, MDT 
+      DFHUNNON Unprotected, numeric, non-display, non-print, nondetectable, MDT 
+      DFHPROTI Protected, intensify, detectable 
+      DFHPROTN Protected, nondisplay, nonprint, nondetectable 
+      DFHMFET (3) Mandatory fill and mandatory enter and trigger 
+      DFHDFFR Default outline 
+      DFHUNDER Underline 
+      DFHRIGHT Right vertical line 
+      DFHOVER Overline 
+      DFHLEFT Left vertical line 
+      DFHBOX Underline and right vertical and overline and left vertical 
+      DFHSOSI SOSI (shift out, shift in) = yes 
+      DFHTRANS (1) Background transparency 
+      DFHOPAQ (1) No background transparency 
+
+Notes: 
+  (1) 
+  Ignored on CICS on Open Systems and CICS for Windows NT. 
+  (2) 
+  Use for constructing embedded Set Attribute (SA) orders in user text or for 
+  constructing datastreams with Start Field Extended (SFE) orders. 
+  (3) 
+  Ignored by cicsterm but can be used for transaction routing to other 
+  terminals. 
+Bit map of attributes
+As an alternative to using the symbolic values in Table 26, attribute bytes may 
+be constructed by using the following table. For portability of applications 
+between EBCDIC and ASCII systems, the value in the char column should be used. 
+Note that existing applications that have been developed on an EBCDIC system may 
+use the hexadecimal values listed in the EBCDIC column. These should be changed 
+to the char values to run on CICS. 
+The column headings for Table 27 are defined as follows: 
+  Attributes: 
+    prot - protection 
+    spd - selector pen detectable (see note) 
+    a/n - autoskip or numeric 
+    hi - high intensity 
+    ndp - non-display print 
+    mdt - Modified Data Tag 
+        Note:This attribute (spd) is not used in CICS on Open Systems and CICS 
+        for Windows NT, and is ignored. However, it can be used for transaction 
+        routing if the receiving system supports this attribute. 
+
+  Hex (and other) codes: 
+    EBCDIC - Extended Binary-Coded Decimal Interchange Code 
+    ASCII - American National Standard Code for Information Interchange 
+    char - Graphic character equivalent to hex code 
+  Characters used for attributes in the body of the table: 
+    U - Unprotected 
+    N - Numeric 
+    H - High intensity 
+    P - Protected 
+    S - Autoskip 
+    Y - Yes 
+
+
+Table 27. Bit map of attributes
+      prot a/n hi spd ndp mdt EBCDIC ASCII char 
+      U 
+
+
+
+
+      40 20 b (blank) 
+      U 
+
+
+
+      Y C1 41 A 
+      U 
+
+      Y 
+
+      C4 44 D 
+      U 
+
+      Y 
+      Y C5 45 E 
+      U 
+      H Y 
+
+      C8 48 H 
+      U 
+      H Y 
+      Y C9 49 I 
+      U 
+
+
+      Y 
+      4C 3C < 
+      U 
+
+
+      Y Y 4D 28 ( 
+      U N 
+
+
+
+      50 26 & 
+      U N 
+
+
+      Y D1 4A J 
+      U N 
+      Y 
+
+      D4 4D M 
+      U N 
+      Y 
+      Y D5 4E N 
+      U N H Y 
+
+      D8 51 Q 
+      U N H Y 
+      Y D9 52 R 
+      U N 
+
+      Y 
+      5C 2A * (asterisk) 
+      U N 
+
+      Y Y 5D 29 ) 
+      P 
+
+
+
+
+      60 2D - (hyphen) 
+      P 
+
+
+
+      Y 61 2F / 
+      P 
+
+      Y 
+
+      E4 55 U 
+      P 
+
+      Y 
+      Y E5 56 V 
+      P 
+      H Y 
+
+      E8 59 Y 
+      P 
+      H Y 
+      Y E9 5A Z 
+      P 
+
+
+      Y 
+      6C 25 % 
+      P 
+
+
+      Y Y 6D 5F _ (underscore) 
+      P S 
+
+
+
+      F0 30 0 
+      P S 
+
+
+      Y F1 31 1 
+      P S 
+      Y 
+
+      F4 34 4 
+      P S 
+      Y 
+      Y F5 35 5 
+      P S H Y 
+
+      F8 38 8 
+      P S H Y 
+      Y F9 39 9 
+      P S 
+
+      Y 
+      7C 40 @ 
+      P S 
+
+      Y Y 7D 27 ' 
+
+      Related Information
+      Appendix E. "Defining BMS mapsets, maps, and fields". 
+      "Basic mapping support (BMS) services" in the CICS Application Programming 
+      Guide .
+
+
+
+
+      
+
+
+[ (C) and (TM) ] 
+&copy; IBM Corporation 1997. All Rights Reserved 
+&copy; Transarc Corporation 1997. All Rights Reserved 
