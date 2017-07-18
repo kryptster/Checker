@@ -1,0 +1,1234 @@
+502115047
+gR0T35QUE.p
+
+
+NM272XT
+dipak47u
+81421
+
+NQPN1AT
+Mallik
+mar@2015
+
+URLs:
+*****
+ORACLE SUITE
+
+AM1:
+
+http://appcpam1.tsg.ge.com:8070/OA_HTML/OA.jsp?page=/oracle/apps/fnd/framework/navigate/webui/HomePG&homePage=Y&OAPB=FWK_HOMEPAGE_BRAND&transactionid=980004606&oapc=2&oas=uIsyj3Rsbr6ud12O8W0rgQ..#
+
+AU1:
+http://appcpau1.tsg.ge.com:8042/OA_HTML/OA.jsp?OAFunc=OAHOMEPAGE#
+
+
+MSO AMPS ITR:
+
+http://libraries.ge.com/foldersIndex.do?entity_id=48657556101&sid=101&SF=1#52992258101
+http://libraries.ge.com/foldersIndex.do?entity_id=49960014101&sid=101&SF=1#52992223101
+
+MSO AMPS Logistics workflow
+
+http://supportcentral.ge.com/products/sup_products.asp?prod_id=209254
+http://supportcentral.ge.com/products/sup_feature_banner_frame.asp?prod_id=209254
+http://supportcentral.ge.com/caseforms/form_print.asp?form_doc_id=123832511
+http://supportcentral.ge.com/caseforms/form_print.asp?form_doc_id=129212061
+
+**********
+
+A0JMFFS0
+A0KMASS0
+
+
+
+OSBOB215
+0570-TEST-ITEM
+0580-LOAD-ITEM-DATA
+
+
+
+Input file : - 
+AISSOS.VELU.JMCX40A.TMP1
+
+
+2840011873049
+
+01  WS-NSN.                            
+    05  FILLER              PIC X(04). 
+    05  WS-NSN-NATION       PIC X(02). 
+    05  WS-NSN-NIIN1        PIC X(03). 
+    05  WS-NSN-NIIN2        PIC X(04). 
+
+01-187-3049
+
+01  WS-FORMATTED-NSN.                           
+    05  FM-NSN-NATION       PIC X(02).          
+    05  FM-DASH1            PIC X(01) VALUE '-'.
+    05  FM-NSN-NIIN1        PIC X(03).          
+    05  FM-DASH2            PIC X(01) VALUE '-'.
+    05  FM-NSN-NIIN2        PIC X(04).          
+
+MOVE WS-NSN-NATION    TO FM-NSN-NATION.
+MOVE WS-NSN-NIIN1     TO FM-NSN-NIIN1.   
+MOVE WS-NSN-NIIN2     TO FM-NSN-NIIN2. 
+MOVE WS-FORMATTED-NSN TO NSN-INDEX-KEY OF NSN-ENTITY.
+
+01-187-3049
+
+
+**********************************
+
+
+****   REC-09 ---> SCRAP OUT OF VINELAND        
+ 01  ISSES-REC-09.                              
+     02  ISSES-TYPE-09               PIC X(02). 
+     02  ISSES-MMT-09                PIC X(07). 
+     02  ISSES-MIP-09                PIC X(13). 
+     02  ISSES-PART-09               PIC X(15). 
+     02  ISSES-SERIAL-NO-09          PIC X(10). 
+     02  ISSES-SCRAP-TICKET-09       PIC X(16). 
+     02  ISSES-QTY-09                PIC 9(03). 
+     02  FILLER                      PIC X(78). 
+***************************************************************************************************************************
+
+MDS - Queries:
+
+VINELAND - Header usage
+
+OSBDB650
+	Called in OSBDB600 - PRINT SHIPPING DOCUMENT
+	Collects the data for military memo of shipments.
+	Creates the Common Interface Detail record for VINELAND.	
+	
+OSBDB790
+	Used in A0JMFHS0 
+	This program reads CMN-INTRFC-HDR where the key = 'VINELAND'. The detail records will have the calc for the SHIPMENT-CNTL 
+	of shipments from vineland to a vendor, strothers or evendale for parts that need to be investigated or repaired.  
+	This program will delete all shipment records that were used to create the shipping paper work, and put the sched's back to 'OS' status but leave the MMT-ENTITY there.
+	Also create a '02' type record for the mds system.
+
+
+		
+JMDV - 2 times/day (10:45 & 23:00)
+JMFH - 1 time /day (21:45)
+JMAA/KMAA - 1 time/day (21:45)
+MD
+
+
+
+A0JMAAS0 - Y
+A0KCNGS0 - N
+A0KMAAS0 - Y
+
+Open Queries: 
+
+MDS - A0ISSPF.MILG.JMDV20A.G3944V00 data not mapping with the file Interface file layout.
+
+====== 9 / September / 2014 ==========
+
+1. ISSES to MDS interfaces.
+	
+Transaction types sent to MDS,
+	
+ Batch
+	OSBAB402 - 06 type record
+	OSBAB440 - 09 type record
+	OSBAB450 - 09 type record 
+	OSBDB790 - 02 type record
+	OSBJB700 - 
+	OSBOCP20 - 01 type record <-- OSBOB020 <- OSBAB402 
+                     		   & OSBOP020 <- online dialog OSBMDVCI  
+
+ Online
+	OSBMDVAV - 03 type record - 'RECEIVER DUE-IN INPUT / VENDOR ALLOCABLE'
+	OSBMDVCQ - 
+	OSBMDVRV - 03, 05, type record - 'RECEIVER DUE-IN STORE VEND RTNS'
+
+
+VENDOR ALLOCABLE:-
+	
+
+
+01 type record :-
+
+01  WS-INTRFC-IMAGE-DATA.                  
+    03 WS-TRANSACTION-CD         PIC X(02).
+    03 WS-MMT-DO-TAG-NUM         PIC X(07).
+    03 WS-ORIG-MMT-DO-TAG-NUM    PIC X(07).
+    03 WS-ORD-ITM-PART-NUM       PIC X(15).
+    03 WS-PART-SER-NUM           PIC X(10).
+    03 WS-ENG-SER-NO             PIC X(06).
+    03 WS-MIL-CUST-CODE          PIC X(02).
+    03 WS-DATE-RCVD.                       
+       05 WS-YY                  PIC 9(02).
+       05 WS-MM                  PIC 9(02).
+       05 WS-DD                  PIC 9(02).
+    03 WS-TRANS-CNTL-NO          PIC X(15).
+    03 WS-SR-QDR                 PIC X(14).
+    03 WS-MIP-EI                 PIC X(13).
+    03 WS-INVESTIGATIVE-IND      PIC X(01).
+    03 WS-ENG-FAM-CD             PIC X(02).
+    03 WS-CUST-CNTR-NUM          PIC X(04).
+    03 WS-GE-SCHED-DUE-OUT-QTY   PIC 9(05).
+    03 WS-VERIFICATION-IND       PIC X(01).
+    03 WS-CASE-NUM               PIC X(07).
+    03 WS-SET-SEQ-NUM            PIC 9(02).
+
+
+Insert after 15 
+
+
+OSBMDVCI : 'VINELAND CUSTOMER INPUT LODGE PRCS'
+
+
+
+
+OSBOCP20 :
+To store the order-line-item and order schedule detail for the vineland warehouse.
+A mini lodging process will occcur, and all set connections will be made on order and warehouse side of the database.
+
+
+IF  PROGRAM-IND                       = 'O' 
+AND MIL-CUST-CODE IN ORDER-ENTITY NOT = 'RV'
+	 MDS interface record created.
+
+
+
+		
+
+
+================
+
+ACSOLB.PROG.ISS###.TBLINP()
+
+
+
+===========
+
+3102 - Balaji ITIM
+
+
+AISSPD.ISSES.COPYLIB(OSBOWS81)
+
+WS-ISSES-ORDER-EXTRACT-REC
+
+
+****
+
+Good Afternoon Everybody
+
+Today's KT session is all about the project 'Eliminating Hard copy reports from ISSES'.
+
+In current ISSES world, reports can be categorized as Three reports,
+
+	1. Reporting from BDW
+	2. Reports that are generated and emailed directly to users
+	3. Hard copy reports.(Hard copy reports are nothing but the reports printted using paper.)
+
+How these reports are printed and used ?
+
+ISSES prints the reports at remote location called Xerox system. All the reports are printed with Bin number. 
+Once the reports are printed, a person will collect all the reports print at the XeroX system and leaves them in the drop boxes.
+There will many drop box placed. Each drop box will taged with bin number. The person who collects the report will check for the bin number of report and drops them in the corresponding drop box.
+
+Each drop boxes are owned by diffirent users. The users will pick the reports and make the necessary usage with them.
+
+Some on these reports print are not attended by any of the users. This leads to the waste of papers and prints cost.
+
+So we came up with an idea to stop the reports that are not used today. We had discussion with all the bin owner and the reports tagged for their bin. After this discussion many of the reports were founded that not required from the current isses.
+
+So we started to stop the reports by shutdowning the report jobs without harms to the other jobs.
+
++++++++++++++++++++++++++
+
+ABBACC.IM2PCOB.SRCLIB(GOEBXS04)
+
+
+
+Customer Conversion PDS:
+************************
+TSOQ
+AISSIS.AMPSAERO.DATA.JCL          
+AISSIS.AMPSAERO.DATA.LOADLIB      
+AISSIS.AMPSAERO.DATA.RSPJCL       
+AISSIS.AMPSAERO.DATA.RSPJCL.BK1126
+
+AISSIS.AMPSAERO.CUST.S2D2MAPD.NULL
+AISSIS.AMPSAERO.S2D2MAPD.NOTNUL
+
+TSOR
+AISSIS.AMPSAERO.DATA.COBOL
+DELIVER2
+DFSH2DL3
+CMIO
+CMLS
+
+
+PDS from Santhosh
+^^^^^^^^^^^^^^^^^^
+
+ASPSRT.JCL.CNTL2(A0JISSS0)
+Kv, Santhosh (GE Aviation, Non-GE) (9:56 AM): AISSIS.SANTHU.FOCJCL1
+Kv, Santhosh (GE Aviation, Non-GE) (9:59 AM): AISSIS.SANTHU.FOCJCL1(AMPSOPE1)    -          This Will Compare The SHIP-TO And DELIV-TO Of Open Order File With The Master Sheet Sent And Writes SHIPTO/DELIV-TO Which Is Found In Open Order File And Not In Master Sheet Along With Its CNNA And CNMF Address.
+
+EXAMPLE: for the below SHIPTO/DELIV-TO which is not found in master file but found in open order file
+1) WARDR AB  - FOR THIS BOTH CNNA AND CNMF VALUES ARE DISPLAYED
+2) WARWC    - FOR THIS ONLY CNNA VALUES ARE DISPLAYED
+
+Kv, Santhosh (GE Aviation, Non-GE) (10:00 AM): AISSIS.AMPSAERO.DATA.JCL
+
+
+--------------------------------
+DELIVER2 : Extracts delvier to for all customers.
+
+Flow:
+1. Walks thru all customer-entity record and process the Ps owner code = 'Z' and PS Admin code not= '000010BE'.
+2. Verifies for the hold-cd of cusotmer-entity(array) is 'CI'. If yes, then Customer status set as 'I'. Else Customer status set as 'A'.
+3. For cust-set-cd not 'F'/'U' and cust-country-cd of customer-entity is 'US', then Customer class code set as 'Domestic' Else 'Foreign'.
+4. NAME-ADDR-REL record obtained for 'ST' and walks thru NAME-ADDR-ENTITY and MARK-FOR records. 
+5. Prepares the output file.
+
+
+Layout :
+
+01  OUT-REC.                                                  
+    05 OUT-DATA-SOURCE                 PIC X(03).             
+    05 OUT-PIPE1                       PIC X(01) VALUE '|'.   
+    05 OUT-ORG-ID                      PIC X(01).             
+    05 OUT-PIPEA                       PIC X(01) VALUE '|'.   
+    05 OUT-CUSTOMER-NUMBER             PIC X(06).             
+    05 OUT-PIPE2                       PIC X(01) VALUE '|'.   
+    05 OUT-SUPER-CUSTOMER              PIC X(04) VALUE SPACES.
+    05 OUT-PIPE3                       PIC X(01) VALUE '|'.   
+    05 OUT-PARTY-NUM                   PIC X(01) VALUE SPACES.
+    05 OUT-PIPE4                       PIC X(01) VALUE '|'.   
+    05 OUT-ORIG-SYS-ADDRE-REF          PIC X(08).             
+    05 OUT-PIPE5                       PIC X(01) VALUE '|'.   
+    05 OUT-GLOB-AR-LOCATION            PIC X(01).             
+    05 OUT-PIPE6                       PIC X(01) VALUE '|'.   
+    05 OUT-ORIG-SYS-PARTY-REF          PIC X(06).             
+    05 OUT-PIPEB                       PIC X(01) VALUE '|'.   
+    05 OUT-ORGI-SYS-PARENT-REF         PIC X(01).             
+    05 OUT-PIPE7                       PIC X(01) VALUE '|'.   
+    05 OUT-PARTY-SITE-NUM              PIC X(01).             
+    05 OUT-PIPE8                       PIC X(01) VALUE '|'.   
+    05 OUT-CUSTOMER-NAME               PIC X(35).             
+    05 OUT-PIPE9                       PIC X(01) VALUE '|'.   
+    05 OUT-CUSTOMER-STATUS             PIC X(01).             
+    05 OUT-PIPE10                      PIC X(01) VALUE '|'.   
+    05 OUT-CUSTOMER-TYPE               PIC X(08).             
+    05 OUT-PIPE11                      PIC X(01) VALUE '|'.   
+    05 OUT-CUST-CAT-CODE               PIC X(01).             
+    05 OUT-PIPE12                      PIC X(01) VALUE '|'.   
+    05 OUT-CUST-CLASS-CODE             PIC X(09) VALUE SPACES.
+    05 OUT-PIPE13                      PIC X(01) VALUE '|'.    
+    05 OUT-ORIG-SYS-CUST-REF           PIC X(06).              
+    05 OUT-PIPE14                      PIC X(01) VALUE '|'.    
+    05 OUT-BILL-TO-ORIG-ADD-REF        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE15                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS1                    PIC X(39).              
+    05 OUT-PIPE16                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS2                    PIC X(39).              
+    05 OUT-PIPE17                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS3                    PIC X(39).              
+    05 OUT-PIPE18                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS4                    PIC X(39).              
+    05 OUT-PIPE19                      PIC X(01) VALUE '|'.    
+    05 OUT-CITY                        PIC X(15).              
+    05 OUT-PIPE20                      PIC X(01) VALUE '|'.    
+    05 OUT-STATE                       PIC X(21).             
+    05 OUT-PIPE21                      PIC X(01) VALUE '|'.   
+    05 OUT-PROVINCE                    PIC X(01) VALUE SPACES.
+    05 OUT-PIPE22                      PIC X(01) VALUE '|'.   
+    05 OUT-COUNTY                      PIC X(20).             
+    05 OUT-PIPE23                      PIC X(01) VALUE '|'.   
+    05 OUT-POSTAL-CODE                 PIC X(06).             
+    05 OUT-PIPE24                      PIC X(01) VALUE '|'.   
+    05 OUT-COUNTRY                     PIC X(30).             
+    05 OUT-PIPE25                      PIC X(01) VALUE '|'.   
+    05 OUT-LOCATION                    PIC X(08).             
+    05 OUT-PIPE26                      PIC X(01) VALUE '|'.   
+    05 OUT-PRIM-SITE-USE-FLAG          PIC X(01).             
+    05 OUT-PIPE27                      PIC X(01) VALUE '|'.   
+    05 OUT-SITE-USE-CODE               PIC X(10) VALUE SPACES.
+    05 OUT-PIPE28                      PIC X(01) VALUE '|'.   
+    05 OUT-CUST-TAX-CODE               PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE29                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-TAX-EXEMPT-NUM         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE30                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-TAX-REF                PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE31                      PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-TAX-CODE           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE32                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-SHIP-VIA-CODE          PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE33                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-ATTRIBUTE4             PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE34                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-ATTRIBUTE5             PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE35                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-ATTRIBUTE6             PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE36                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-ATTRIBUTE7             PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE37                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE8             PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE38                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE9             PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE39                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE10            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE40                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE11            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE41                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE12            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE42                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE13            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE43                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE14            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE44                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE15            PIC X(02) VALUE SPACES.  
+    05 OUT-PIPE45                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE16            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE46                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE17            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE47                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE18            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE48                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE19            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE49                      PIC X(01) VALUE '|'.     
+    05 OUT-CUST-ATTRIBUTE20            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE50                      PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE14         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE51                      PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE15         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE52                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTR-CAT           PIC X(10) VALUE SPACES.  
+    05 OUT-PIPE53                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE1         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE54                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE5         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE55                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE6         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE56                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE7         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE57                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE10        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE58                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE15        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE59                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE16        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE60                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE17        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE61                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE18        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE63                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE19        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE64                      PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE20        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE65                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-UNPAID-REC            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE66                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-REC                   PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE67                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-REV                   PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE68                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-TAX                   PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE69                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-FREIGHT               PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE70                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-CLEARING              PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE71                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-UNBILLED              PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE72                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-UNEARNED              PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE73                      PIC X(01) VALUE '|'.     
+    05 OUT-CUSTOMER-KEY                PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE74                      PIC X(01) VALUE '|'.     
+    05 OUT-TERRITORY                   PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE75                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-REMITTANCE            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE76                      PIC X(01) VALUE '|'.     
+    05 OUT-GL-ID-FACTOR                PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE77                      PIC X(01) VALUE '|'.     
+    05 OUT-LOCATION-CCID               PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE78                      PIC X(01) VALUE '|'.    
+    05 OUT-PERSON-FLAG                 PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE79                      PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-ATTRIBUTE1         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE80                      PIC X(01) VALUE '|'.    
+    05 OUT-REQUEST-ID                  PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE81                      PIC X(01) VALUE '|'.    
+    05 OUT-INSERT-UPDATE-FLAG          PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE82                      PIC X(01) VALUE '|'.    
+    05 OUT-VALIDATED-FLAG              PIC X(01).              
+    05 OUT-PIPE83                      PIC X(01) VALUE '|'.    
+    05 OUT-CUST-ATTRIBUTE-CAT          PIC X(03) VALUE SPACES. 
+    05 OUT-PIPE84                      PIC X(01) VALUE '|'.    
+    05 OUT-ADRESS-ATTRIBUTE-CAT        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE85                      PIC X(01) VALUE '|'.    
+    05 OUT-WARNING-TAX                 PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE86                      PIC X(01) VALUE '|'.    
+    05 OUT-PERSON-FIRST-NAME           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE87                      PIC X(01) VALUE '|'.    
+    05 OUT-PERSON-LAST-NAME            PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE88                      PIC X(01) VALUE '|'.    
+    05 OUT-INTERFACE-STATUS            PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE89                      PIC X(01) VALUE '|'.    
+    05 OUT-ADRESS-KEY                  PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE90                      PIC X(01) VALUE '|'.    
+    05 OUT-DEMAND-CLASS-CODE           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE91                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-CAT-CODE            PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE92                      PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-CAT-PHONETIC        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE93                      PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-NAME-PHONETIC      PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE94                      PIC X(01) VALUE '|'.    
+    05 OUT-TRANSLATED-CUST-NAME        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE95                      PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-PROSPECT-CODE      PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE96                      PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE8         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE97                      PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE9         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE98                      PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE21        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE99                      PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE22        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE100                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE23        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE101                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE24        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE102                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-ATTRIBUTE25        PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE103                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-SHIP-VIA-CODE          PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE104                     PIC X(01) VALUE '|'.    
+    05 OUT-LAST-UPDATED-BY             PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE105                     PIC X(01) VALUE '|'.    
+    05 OUT-LAST-UPDATED-DATE           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE106                     PIC X(01) VALUE '|'.    
+    05 OUT-CREATED-BY                  PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE107                     PIC X(01) VALUE '|'.    
+    05 OUT-CREATED-DATE                PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE108                     PIC X(01) VALUE '|'.    
+    05 OUT-LAST-UODATE-LOGIN           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE109                     PIC X(01) VALUE '|'.    
+    05 OUT-MESSAGE-NEXT                PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE110                     PIC X(01) VALUE '|'.     
+    05 OUT-JGZZ-FISCAL-CODE            PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE111                     PIC X(01) VALUE '|'.     
+    05 OUT-LANGUAGE                    PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE112                     PIC X(01) VALUE '|'.     
+    05 OUT-URL                         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE113                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE11        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE114                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE12        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE115                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE13        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE116                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE14        PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE117                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE10         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE118                     PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-ATTRIBUTE11         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE119                     PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-ATTRIBUTE12         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE120                     PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-ATTRIBUTE13         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE121                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-TAX-EXEMPT-NUM     PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE122                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-TAX-REFERENCE      PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE123                     PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-ATTRIBUTE2         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE124                     PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-ATTRIBUTE3         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE125                     PIC X(01) VALUE '|'.    
+    05 OUT-ADDRESS-ATTRIBUTE1          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE126                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE2          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE127                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE3          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE128                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE4          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE129                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE5          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE130                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE6          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE131                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE7          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE132                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE8          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE133                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE9          PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE134                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE2         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE135                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE3         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE136                     PIC X(01) VALUE '|'.     
+    05 OUT-SITE-USE-ATTRIBUTE4         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE137                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE16         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE138                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE17         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE139                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE18         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE140                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE19         PIC X(01) VALUE SPACES.  
+    05 OUT-PIPE141                     PIC X(01) VALUE '|'.     
+    05 OUT-ADDRESS-ATTRIBUTE20         PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE142                     PIC X(01) VALUE '|'.    
+    05 OUT-ORDER-TYPE                  PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE143                     PIC X(01) VALUE '|'.    
+    05 OUT-PRICE-LIST                  PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE144                     PIC X(01) VALUE '|'.    
+    05 OUT-SHIP-SET                    PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE145                     PIC X(01) VALUE '|'.    
+    05 OUT-WAREHOUSE                   PIC X(03).              
+    05 OUT-PIPE146                     PIC X(01) VALUE '|'.    
+    05 OUT-SALESPERSON                 PIC X(20).              
+    05 OUT-PIPE147                     PIC X(01) VALUE '|'.    
+    05 OUT-PAYMENT-TERM                PIC X(04).              
+    05 OUT-PIPE148                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-FRE-TERMS          PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE149                     PIC X(01) VALUE '|'.    
+    05 OUT-SITE-USE-FOB-POINT          PIC X(01).              
+    05 OUT-PIPE150                     PIC X(01) VALUE '|'.    
+    05 OUT-INV-GROUPING-RULE           PIC X(01) VALUE SPACES. 
+    05 OUT-PIPE151                     PIC X(01) VALUE '|'.    
+
+--------------------------------------------------
+DFSH2DL3 : Extracts the ship_to and Deliver_to for active customers.
+
+Flow:
+1. Walks thru all customer-entity record and process the Ps owner code = 'Z' and PS Admin code not= '000010BE'.
+2. Obtains las CUST-BUS-REL record. 
+3. Obtains first DEFAULT-ORD record and gets the ship to address and mark for address. 
+4. If values are spaces, then fetched from DEFAULT-SHPT record for the ATA-SHIP-TO of DEFAULT-ORD.
+5. Writes the all mark for a that shipto.
+
+Layout:
+01  OUT-REC.                                                   
+    05 OUT-DATA-SOURCE                 PIC X(10).              
+    05 OUT-PIPE1                       PIC X(01) VALUE '|'.    
+    05 OUT-ATA-SHIP-TO                 PIC X(06).              
+    05 OUT-PIPE2                       PIC X(01) VALUE '|'.    
+    05 OUT-CUSTOMER-CODE               PIC X(05).              
+    05 OUT-PIPE3                       PIC X(01) VALUE '|'.    
+    05 OUT-SHIP-TO-ADDR-CD             PIC X(06).              
+    05 OUT-PIPE4                       PIC X(01) VALUE '|'.    
+    05 OUT-DELIVER-TO-LOC              PIC X(08).              
+    05 OUT-PIPE5                       PIC X(01) VALUE '|'.    
+    05 OUT-DEFAULT-LOC                 PIC X(01).              
+    05 OUT-PIPE6                       PIC X(01) VALUE '|'.    
+    05 OUT-PROCESS-STAT-CD             PIC X(01) VALUE SPACE.  
+
+
+
+
+
+*********************************
+30/9/2014
+
+List of task:
+1. Customer conversion (OTR) - Analysis
+2. CAS & IMPACT - receipt creation
+3. CAS to PSS - MD200 creation
+4. 
+
+
+
+
+***********************************
+
+13/10/2014
+
+Unbilled and Costed Reports.
+
+A0JFCWS0
+********
+
+OSBYB845*UC - header created IF BILLABLE-IND OF INVOICE-MS-DTL = 'Y'/ 'C'
+
+^^^^^^^^^^^^^^^^
+
+OSBYB845*UC  used in below jobs
+
+A0JFCUS0 - Mnthly report - 2
+A0JFCWS0 - last fiscal Mnthly report
+A0KFCDS0 - Mnthly report 
+A0KFCFS0 - last fiscal Mnthly report
+
+
+
+SH-MS-NUMBER --> INVOICE-ENTITY --> INVOICE-MS-DTL 
+If not (KIT-COMP-CD OF INVOICE-MS-DTL = 'E') OR        
+   (BILLABLE-IND OF INVOICE-MS-DTL = 'N' OR SPACES)
+
+   If COSTED-STATUS-CD oF INVOICE-MS-DTL = ' ' or 'A'
+
+	INVOICE-MS-DTL --> INVC-MS-DTL-REL (A)
+	Owner obtained for from set relation (B)
+ 	if COSTED-STATUS-CD is 'M' / 'S'
+		and active control header is '03' / '04' / '09'
+            
+
+		IF BILLABLE-IND OF INVOICE-MS-DTL = 'Y' OR    
+		   BILLABLE-IND OF INVOICE-MS-DTL = 'C'       
+		
+		    MOVE 'OSBYB845*UC'    TO INTRFC-FILE-KEY  
+
+
+
+
+
+
+*************************************************************
+GE Lib: http://libraries.ge.com/personalLibrary.do?ohr_id=502207842#39344396101
+
+
+RITM3421327 
+
+
+
+
+A0JMEZS0 - ISS MILI
+
+
+
+1) ACCEPT DB-NAME AND INITIALIZATION                          
+                                                              
+2) OBTAINS FIRST SHIP ORDER SHIPPED DETAIL RECORD - 4656      
+                                                              
+3) SWEEPS SHIP ORDER SHIPPED DETAIL RECORD UNTIL END OF SET.  
+   PERFORM STEPS  3A THRU 3G  WHILE INSIDE LOOP.              
+                                                              
+   3A) CHECK PS-OWNER CODE (MUST BE 'D' OR 'E' OR 'C') AND OR 
+       SCHEDULE STATUS CODE (MUST BE 'SH').  THIS BY-PASSES   
+       UNWANTED RECORDS.  MOVE PART NUMBER OF THIS RECORD TO  
+       OUTPUT RECORD.  MOVE MS-NUMBER TO KEY OF SH-MS-NUMBER  
+       RECORD.                                                
+                                                              
+   3B) CALC INTO THE SHIPPED MS NUMBER RECORD.                
+   3B1) OBTAIN ENVOICE-ENTITY RECORD WHICH IS OWNER OF THE     
+       ENVOICE-MS-DTL AND POPULATE DETAILS FROM ENVOICE ENTIT
+       & ENVOICE-MS-DTL TO SHIP EXTRACT.                     
+                                                             
+   3C) OBTAIN SHIP ORDER LINE ITEM RECORD.  THIS IS THE OWNER
+       THE SHIP ORDER SHIPPED DETAIL RECORD.  MOVE KEY TO KEY
+       ORDER LINE ITEM RECORD.                               
+                                                             
+   3D) CALC INTO ORDER LINE ITEM RECORD.                     
+                                                             
+   3E) OBTAIN ORDER ENTITY RECORD.                           
+                                                             
+   3F) OBTAIN CUSTOMER ENTITY RECORD.                        
+                                                             
+   3G) CREATE OUTPUT RECORD.              
+
+
+
+Owner INVOICE-MS-DTL S4646-4656 
+Onwer  SH-MS-NUMBER S4649-4646
+Onwer SH-PARTIAL-STUB S4677-4649
+Onwer  S4645-4646
+Onwer  S4502-4504
+Onwer  S4000-4502
+
+
+
+ 02 GE-ORD-NUM-KEY                    DISPLAY                                                                                1    25 
+                                                   SET CONTROL ITEM FOR --------      CALC             ASC DUP NOT ALLOWED           
+ 04 PS-OWNER-CD                       DISPLAY                                         X(01)                                  1     1 
+ 04 MIL-ORD-NUM-KEY                   DISPLAY                                                                                2    24 
+ 06 GE-CNTR-NUM-CD                    DISPLAY                                                                                2     5 
+ 08 GE-CNTR-NUM-CD-1                  DISPLAY                                         X(01)                                  2     1 
+ 08 GE-CNTR-NUM-CD-2-5                DISPLAY                                         X(04)                                  3     4 
+ 06 GE-CNTR-EXH                       DISPLAY                                         X(06)                                  7     6 
+ 06 FILLER                            DISPLAY                                         X(0013)                               13    13 
+ 04 COM-ORD-NUM-KEY  MIL-ORD-NUM-KEY  DISPLAY                                                                                2    24 
+ 06 COM-CUST-CODE                     DISPLAY                                                                                2     6 
+ 08 COM-CUST-CD                       DISPLAY                                         X(02)                                  2     2 
+ 08 COM-PUR-OFF                       DISPLAY                                         X(1)                                   4     1 
+ 08 COM-ROUTING-CD                    DISPLAY                                         X(02)                                  5     2 
+ 08 FILLER                            DISPLAY                                         X                                      7     1 
+ 06 COM-CUST-ORD-NUM                  DISPLAY                                         X(18)                                  8    18 
+
+
+                   
+***************
+18-11-2014
+***************
+Open Order extract
+1. A0JCRES0
+2. A0JIHPS0
+3. A0JIRAS0
+4. A0JIRES0
+5. A0JISKS0
+6. A0JMCES0
+7. A0JMEAS0
+8. A0JMENS0
+9. A0JMRFS0
+10. A0JMXDS0 - Open order extract
+11. A0JNRKS0
+12. A0KMCES0 - Open order to PSS
+13. A0KMRDS0 - Military order extract
+14. A0KMXDS0 _ ISSES Opend order extract
+15. A0KNRKS0 - ISSES order extract
+16. 
+
+
+
+AISSPD.ISSES.COPYLIB(OSBOWS81)
+
+
+
+21/11/2014 - another 
+
+********************************************************
+ORDER STATUS:
+********************************************************
+
+ORDER-ENTITY:
+ORD-STATUS-CD: OE,OP,CN,CL
+
+ORD-LINE-ITEM:
+ORD-ITM-STATUS-CD: SPACES,OE,OP,OS,SP,DL,CN,CL
+
+ORD-SCHED-DTL:
+ORD-SCHED-STATUS-CD: SPACES,OE,OS,IP,SH,CN
+
+*********************************************************
+
+S4502-4514 - ORD-RFQ-REF (check for the matching ENG-CNTR-MOD-NUM OF ORDER-ENTITY = ENG-CNTR-MOD-NUM OF ORD-RFQ-REF)
+
+
+
+***************************************************
+BAA functionality
+***************************************************
+Batch:
+
+OSBOB004
+OSBOB520
+OSBOB540
+
+OSBDB800
+OSBDB801
+OSBDB820
+OSBDB821
+OSBDB825
+OSBDB826
+OSBOB004
+OSBOB520
+OSBOB540
+OSBRB606
+
+Online:
+
+OSBODI04
+OSBOD004
+OSBTDD19
+
+
+SCHRES Thala..
+For Schedule Reason codes
+For Part Edit Reason Code, It is PEDITRSN
+ok thanx...
+
+
+HQ0338
+
+
+Part - 6027T92G01
+
+SCN -  SCNP1
+
+BILL OF LADING - BOF-SCNP1        
+
+MMT - 
+
+http://supportcentral.ge.com/caseforms/form_print.asp?form_doc_id=115360318
+
+
+REQ
+
+Count 
+ZQ - 830
+ZM - 787
+
+PO
+
+Count
+ZQ - 17296
+ZM - 8508
+Total - 25804
+
+
+Please check the attached data for IMPACT open PO & ASN.
+
+Record counts (total = 25,804 PO with 567 ASNs) :
+ZQ - 17296
+ZM - 8508
+
+
+
+**************
+A0IMSPF.IMSG.ASDA06A.G9059V00  - 6 SMS
+A0IMSPF.IMSG.ASDA06A.G9058V00  - 7 SMS
+A0IMSPF.IMSG.ASDA06A.G9057V00  - 2 SMS
+A0IMSPF.IMSG.ASDA06A.G9056V00  - 2 SMS
+A0IMSPF.IMSG.ASDA06A.G9055V00  - 3 SMS
+A0IMSPF.IMSG.ASDA06A.G9054V00  - 26 LMS & 20 SMS
+
+Final out file for ASN - AMLSAP.IMSN.ASNFINAL.DT1203
+
+
+CAS PO
+
+LMS - 2254
+SMS - 5126
+
+Total = 7380
+
+CAS ASN
+
+LMS - 26
+SMS - 20
+
+Total = 46
+
+
+
+Please check the 
+ OPen PO & ASN file.
+
+CAS Open PO:
+LMS 1910
+SMS 4814
+
+CAS ASN:
+LMS 0
+SMS 5
+
+F/TN/57Z/002682/2001 :
+
+
+
+
+PERFORM 2200-GET-AR-CUSTOMER-NUM THRU 2200-EXIT 
+   UNTIL EOF-NAME-ADDR-REL                      
+IF WS-AR-CUST-FOUND = 'N'                       
+   PERFORM 2500-WRITE-ACT-CUSTOUT-REC           
+      THRU 2500-EXIT                            
+END-IF                                          
+MOVE 'Y' TO WS-CUSTOMER-ACTIVE-FOUND            
+
+
+
+
+CUsTOMER-ENTITY ==> ORDER-ENTITY => ORDE-LINE-ITEM ==> SCHED ==> WHSE-ITEM
+FIND CURRENT CUSTOMER-ENTITYU
+OBTAIN S4000-4006
+
+
+Error indicator - 'Y'
+
+
+Dial In: 866 546 4138. Passcode: 3790639
+
+re 1.6.0_31
+0.31
+
+
+Arun Prabharan Mobile:
+513-802-7671
+
+
+Sathish - 10,000 (1000 * 5, 500 * 10)
+
+1000 * 5 => 5000 Udhay family
+500 * 1 = >  500 Bus ticket
+500 * 6 = > 3000 Uthama
+500 * 3 = > 1500
+
+
+MOVE PROCESS-STAT-CD OF MARK-FOR 
+  TO OUT-MARK-FOR-TYPE-CD.       
+
+
+
+
+
+AR-CUST-REC.     
+05 AR-PS-OWNER-CD
+05 FILLER1       
+05 AR-CUSTOMER-CD
+
+
+
+********** 
+
+CAS 
+
+ABBACC.IM2PCOB.SRCLIB(GOEBXTO2)
+
+
+CAS QA
+*** **
+For OLQ :
+--------------------
+--> Login TICS
+--> Type IMSC and press enter
+--> select 13 
+--> give SIGN SS CSADMONA press enter 
+
+For INQPRTP4:
+------------------
+--> first two steps are same
+--> select 09
+--> Give the screen name and plant code press enter 
+
+
+
+AR-PS-OWNER-CD of AR-CUST-REC
+
+
+
+CAS:
+
+PSS file - A0IMSPF.IMSG.ASDA06A.G1018V00
+
+PSS file - A0IMSPF.IMSG.ASDA06A.G1027V00 (Latest)
+
+WMS file - A0IMSPF.IMSG.ASDA07A.G1027V00 (Latest)
+
+********
+
+IMPACT job flow for ITR:
+
+1. Q10484112
+2. Q10484113
+
+Palanisamy, Velusamy (GE Aviation, Non-GE) (6:04 PM): A0REQES0
+
+Palanisamy, Velusamy (GE Aviation, Non-GE) (6:08 PM): AMATIS.MSOAMPS.DCJCL
+Palanisamy, Velusamy (GE Aviation, Non-GE) (6:09 PM): AMATIS.MSOAMPS.SITJCL
+
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:13 PM): AMATIS.NOZB8HT.TESTJCLS(A0SPBBS0)
+
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:14 PM): AMATIS.MATN.SPBB15A.RAMA
+
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:16 PM): AMATIS.NOZB8HT.TESTJCLS(A0SPB2S0)
+
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:24 PM): SPSC00SS
+
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:29 PM): AMATIS.NOZB8HT.TESTJCLS(A0SPCDS0)
+
+Palanisamy, Velusamy (GE Aviation, Non-GE) (6:30 PM): CAS-IMPACT - Help needed
+Jagadeesan, Subburaj (GE Aviation, Non-GE) (6:33 PM): impactitteam@ge.com
+
+
+
+
+
+
+
+Absolute BBQ :- 04435350007
+
+
+
+AMATIS.MATN.SPAB10A.MAR03
+
+AISSIS.MILN.SPAB10A.MAR03
+
+
+EVEN - AISSIS.MILN.ACTCUST.EVEN.FINAL
+LYNN - AISSIS.MILN.ACTCUST.LYNN.FINAL
+
+
+
+INREC FIELDS=(1:1,1,2:3,6,8:63,1,09:76,10) 
+SORT FIELDS=(1,07,CH,A)                    
+SUM FIELDS=NONE                            
+
+
+
+OBTAIN NEXT CUST-CNTR-CD-REL WITHIN S4010-4013;        
+OBTAIN PRIO CNTR-CODE WITHIN S4008-4010;               
+OBTAIN CONTRACT-NUMBER WHERE CALC='*SE MISC. COMML PO';
+
+
+IMPACT:
+AMATLB.MSTRMTLS.
+*.*.PRODLIB
+*.*.COPYLIB
+*.*.QUALITY
+
+
+'99/9A/9999',C'AS REQD   '
+'99/9B/9999',C'UNSCHD    '
+'99/9C/9999',C'CANCEL    '
+'99/9E/9999',C'CIDCNL    '
+'99/9H/9999',C'HOLD      '
+'99/9M/9999',C'MILTERM   '
+'99/9R/9999',C'AUTOALGN  '
+'99/9T/9999',C'TERMIN    '
+'99/9U/9999',C'UNKNOWN   '
+'99/9V/9999',C'MRBREQ    '
+'99/9X/9999',C'DELETE    '
+'99/9Y/9999',C'REQ       '
+
+
+
+CAS :
+ABBACC.IM2PCOB.SRCLIB
+
+Amit-1800
+
+5010333 - 898
+
+
+CONTACT1
+
+
+Tailor2
+*******
+
+NOZBDAT.CMDPROC.CLIST 12:16 PM 
+PROC 0                                                 
+                                                       
+ALLOC F(SYSPROC1) DA('ABBAPD.CMDPROC.CLIST') SHR       
+ALLOC F($)  DA('AISSOS.PCSISS.CMDPROC.CLIST') SHR REUSE
+CONCAT FI(SYSPROC SYSPROC1 $)                          
+                                                       
+$STARTUP                                               
+                                                       
+BYPASS: +                                              
+END 
+
+
+IMPACT - Schedule status
+1 - Open
+
+
+A0MATPF.MATG.SPAB05A.G2963V00
+
+
+TRACK:
+
+Q10573502
+
+
+
+WHERE REQ_NUMBER_REQE      = REQ_NUMBER_REQS       
+AND   REQ_ITEM_REQE        = REQ_ITEM_REQS         
+AND   BUYER_REQE           = BUYER_CA_CODE_BUYE    
+AND   REQ_ITEM_REQE        >= '000'                
+AND   QUALITY_LEVEL_REQE   NOT LIKE 'Z%'           
+AND   QUALITY_LEVEL_REQE   <> 'FI'                 
+AND   CONTRACT_REQS        <> 'ZZZ'                
+AND   REQUESTOR_REQE       <> 'MM'                 
+AND   DATE_MFG_REQS        NOT LIKE '9999999%'     
+AND   PN_SUFFIX_REQE       NOT LIKE 'F/%'          
+AND   PN_SUFFIX_REQE        NOT IN                 
+                   ('BUF','IHT','MOL','S/O','SST') 
+
+
+
+
+Velusamy Palanisamy (Emp-Id : 710769)
+IGATE GLOBAL SOLUTION,
+SIPCOT IT PARK,
+SIRUSERI,
+CHENNAI - 603103
+Ph- 9790554496.
+
+
+
+
+
+PROD-CUTOVER
+IMPACT SUPERC
+
+NM272XT.SPSBMAPS.SUPERC.LIST.DT1105
+NM272XT.SPSBX511.SUPERC.LIST.DT1105
+NM272XT.SPSBX514.SUPERC.LIST.DT1105
+NM272XT.SPSBX515.SUPERC.LIST.DT1105
+
+
+A0PSIJ*
+A0PSJG*
+
+04433548248 - Sangetha 17900 / 12 months
+Unique Idienty Number                                                                                             - 153978
+
+
+
+
+
+ISSES MISSING JOBS
+******************
+Monday Missing jobs in Batch sheet
+A0JMSJS0
+A0JMSKS0
+A0JMGOS0
+A0KMGOS0
+A0KMSJS0
+A0KMSKS0
+
+Tuesday Missing Jobs
+A0JMSJS0
+A0JMSKS0
+A0KMFDS0
+A0JMGOS0
+A0KMGOS0
+A0KMSJS0
+A0KMSKS0
+
+Wednesday Missing jobs
+A0JCWGFT
+A0JMSJS0
+A0JMSKS0
+A0JWHAS0
+A0KCSVS0
+A0KFBPRP
+A0KFBXS0
+A0KMFDS0
+A0JMGOS0
+A0JMLIS0
+A0KMGOS0
+A0KMLIS0
+A0KMSJS0
+A0KMSKS0
+
+Thursday Missing Jobs
+A0JMSJS0
+A0JMSKS0
+A0KMFDS0
+A0JMGOS0
+A0KMGOS0
+A0KMSJS0
+A0KMSKS0
+
+Friday Missing Jobs
+A0JMSJS0
+A0JMSKS0
+A0JMTIS0
+A0KMFDS0
+A0JMGOS0
+A0KMGOS0
+A0KMSJS0
+A0KMSKS0
+
+SUNDAY mISSING jOBS
+A0JZHTS0
+A0JZRES0
+A0KMMDS0
+
+
+
+Links:
+******
+Python:
+https://www.edx.org/course/introduction-python-data-science-microsoft-dat208x-0?gclid=CKqo886yycsCFdOJaAod1QIAlA

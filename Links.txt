@@ -1,0 +1,202 @@
+http://www.mainframegurukul.com/
+http://www.mainframetutorials.com/
+http://www.tutorialspoint.com/ims_db/ims_db_cobol_basics.htm
+http://mainframewizard.com/content/basics-mainframe
+http://www.mainframegurukul.com/ibm/manuals.php
+http://www.mainframegurukul.com/ibmmainframeforums/viewforum.php?f=18
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=6375&sid=5a455036c112d2d96c701b50f6bba9a7
+http://www.mainframes360.com/2009/04/jcl-questions-archive-for-geeks.html
+http://www.mainframetutorials.com/drona/dronatutorials.html
+http://theamericanprogrammer.com/programming/manuals.cobol.shtml
+http://www.istutorials.com/mainframe.htm
+http://www.google.co.in/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwj718-RnM_NAhXGOY8KHW1tBSgQFggbMAA&url=http%3A%2F%2Fibmmainframes.com%2Fabout47892.html&usg=AFQjCNEElEEARLy6SdyiujrNH7Pj4spRcA&bvm=bv.125801520,d.c2I
+https://support.ca.com/cadocs/0/CA%20IDMS%2018%205%20User%20Bookshelf-ENU/Bookshelf.html
+http://ibmmainframes.com/forum-15.html
+http://www.ibmmainframeforum.com/interview-questions/topic7516.html
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=37
+http://ibmmainframes.com/manuals.php.
+http://ibmmainframes.com/downloads.php.
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=5319
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=1281
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=3586
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=5051
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=7333
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=5188
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=7859
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=3293
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=3524
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=5616
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=4809
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=189
+http://ibmmainframes.com/about55037.html
+ http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=4232
+ http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=4549
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=3251
+http://www.mainframegurukul.com/ibmmainframeforums/viewtopic.php?t=2425
+
+
+
+
+
+http://publibz.boulder.ibm.com/cgi-bin/bookmgr_OS390/handheld/Connected/BOOKS/DFSAPGH0/CONTENTS?DT=20070912182714
+http://www.redbooks.ibm.com/cgi-bin/searchsite.cgi?Query=abcs%20AND%20system%20AND%20programming&SearchMax=250&SearchOrder=1
+
+
+JOIN UNPAIRED,F1,F2 
+JOINKEYS, FINDREP, WHEN=GROUP, ICETOOL
+
+
+
+The EJECT statement has no effect on the compilation of the source unit itself. 
+ EJECT is compiler directing statement in COBOL. 
+
+ The EJECT statement specifies that the next source statement is to be printed at the top of the next page. 
+ When compiler prints the listings of COBOL source code all the lines after EJECT will be next new page. EJECT wont get printed in listing. 
+
+ SKIP is another similar kind of statement - SKIP n 
+ It will skip n lines before continuing to print. 
+
+ Syntax rules - 
+ EJECT should be only one statement on that line 
+ can be termined with period. 
+ can be written in area A or area B.
+
+
+
+
+ADS
+DSECT Reference Guide
+
+IDMS
+Dictionary DSECT Reference Guide
+DSECT Reference Guide
+ 
+Here is a very good overview about IMS : 
+
+http://www.dbazine.com/ofinterest/oi-articles/ims1 
+http://www.dbazine.com/ofinterest/oi-articles/ims2 
+http://www.dbazine.com/ofinterest/oi-articles/ims3
+
+
+http://faqexplorer.com/search.php?q=idms+adso
+ http://interviewquestionsanswerspdf.com/2014/04/top-integrated-database-management-system-idms-interview-questions-and-answers/
+https://www.hub4tech.com/mainframe/question-answer
+http://interviewquestionsanswers.org/_Integrated-Database-Management-System-IDMS
+ http://mainframecode.com/idms-interview-questions/
+http://www.globalguideline.com/interview_questions/Questions.php?sc=Integrated_Database_Management_System_IDMS
+http://www.oocities.org/idmssql/idms63.htm
+http://www.ibmmainframeforum.com/jcl/topic4675.html
+http://ibmmainframes.com/about49605.html
+http://mainframewizard.com/content/basic-sdsf-commands
+http://www-03.ibm.com/systems/z/os/zos/features/sdsf/isf0tip.html
+http://www.mainframes.com/Assembler.html
+http://www.billqualls.com/assembler/
+http://www.edwardbosworth.com/My3121Textbook_HTM/MyText3121_Ch02_V02.htm
+
+
+
+UCFBATCH or RHDCUCFD
+http://www.ca.com/us/support/ca-support-online/product-content/knowledgebase-articles/tec592434.aspx
+
+
+
+
+override parm parameter of a proc in jcl
+
+isrsupc
+
+
+
+
+Approver #1 
+Name: Priyanka Parag Bhandakkar 
+Empl ID: 847620 
+Last Name: Bhandakkar 
+First Name: Priyanka 
+Grade & Designation:  
+ Level 3-Senior Associate - Human Resources  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   994/558-6936  
+
+Approver #2 
+Name: Aksa Sunny 
+Empl ID: 845973 
+Last Name: Sunny 
+First Name: Aksa 
+Grade & Designation:  
+ Sub Contractor-Sub Contractor  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   953/851-9987 
+
+Approver #3 
+Name: Srishti Seth 
+Empl ID: 845899 
+Last Name: Seth 
+First Name: Srishti 
+Grade & Designation:  
+ Sub Contractor-Sub Contractor  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   914/808-8235  Phone/Ext:      Link Line:   918041043488  
+
+Approver #4 
+Name: Gayathri Siva Subramani 
+Empl ID: 839620 
+Last Name: Siva Subramani 
+First Name: Gayathri 
+Grade & Designation:  
+ Sub Contractor-Sub Contractor  
+ Company Location:   Chennai SIPCOT,Chennai,India 
+
+
+Approver #5 
+Name: Mahalakshmi Vellore Venkat 
+Empl ID: 836708 
+Last Name: Venkat 
+First Name: Mahalakshmi 
+Grade & Designation:  
+ Level 3-Senior Associate - Human Resources  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   779/511-0906 
+
+Approver #6 
+Name: Laxmi Sand 
+Empl ID: 833142 
+Last Name: Sand 
+First Name: Laxmi 
+Grade & Designation:  
+ Level 3-Senior Associate - Human Resources  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   +91 9739641547  Phone/Ext:   08041043025   Ext:  Link Line:   680 3025  
+
+Approver #7 
+Name: Asrar Firoz Mohamed 
+Empl ID: 818769 
+Last Name: Mohamed 
+First Name: Asrar 
+Grade & Designation:  
+ Level 6-Assistant Manager - Human Resources  
+ Company Location:   IGS SEZ- CHN,Chennai,India  
+Mobile Number:   763/935-5768  Phone/Ext:      Link Line:   644 1007  
+
+Approver #8 
+Name: Rakesh MS 
+Empl ID: 814594 
+Last Name: MS 
+First Name: Rakesh 
+Grade & Designation:  
+ Level 5-Senior Executive - Human Resources  
+ Company Location:   Chennai SIPCOT,Chennai,India  
+Mobile Number:   994/344-9920  
+
+
+Approver #9 
+Name: Rao,Janardhana P 
+Empl ID: 664158 
+Last Name: Rao 
+First Name: Janardhana 
+Grade & Designation:  
+ Level 7-Deputy Manager - Human Resources  
+ Company Location:   Bangalore Whitefield I,Bengaluru,India  
+Mobile Number:   07259166777  Phone/Ext:   4014   Ext:3391  Link Line:   680-3391  
+
+
