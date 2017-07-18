@@ -1,0 +1,29 @@
+REPORT NO. 01                                          GROUP PROPERTY SYSTEM                              09/30/16  02:37 PAGE     1
+                                                         PURCHASE                            O                            S
+  UNIT  CONTRACT NUMBER           VEND  UNIT COST  QTY   ORDER     PROPERTY NUMBER           C  NOMENCLATURE              T
+  ----  ---------------           ----  ---------  ---   --------  ---------------           -  ------------              -
+  GE
+  CASE          CTR  PART NUMBER
+  ----          ---  -----------
+
+  2750  F33657-99-D-2050          58630      2401     1  1TR58730  4013408-016G01            A  FRT FRM LIFT FIXTURE      N
+                85Z  9545M10
+  2750  F33657-99-D-2050          61218     15480     1  1TC16207  5646-F                    A  CHORD WIDTH GAUGE         N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218      6000     1  1TC16207  5646-E                    A  SPRUE GRIND GAUGE         N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218     18455     1  1TC16207  5646-D                    A  GUILOTINE GAUGE           N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218      6000     1  1TC16207  5646-C                    A  HARD POINT GAUGE          N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218      5200     1  1TC16207  5646-B                    A  LAYOUT FIXTURE            N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218      4750     1  1TC16207  5646-A                    A  LAUE FIXTURE              N
+  E2016A2957CT  85Z  1881M15P01
+  2750  F33657-99-D-2050          61218     44100     1  1TC16207  5646                      A  WAX DIE                   N
+  E2016A2957CT  85Z  1881M15P01
+
+  TOTAL REPORT LINE ITEMS =                      8
+  TOTAL REPORT QUANTITY   =                      8
+  TOTAL REPORT COST       =                     $102,386
+

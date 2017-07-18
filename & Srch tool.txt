@@ -1,0 +1,421 @@
+/* Rexx - An advanced search utility for PDS libraries               */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                       ______ ______ _    _ _    _     */
+/*                       |____/ |_____  \__/   \__/  */
+/*                       |   \_ |_____ _/  \_ _/  \_ */
+/*                                                                   */
+/* Info : Search for strings within the current PDS. Allows for      */
+/*        extended search using multiple keywords such as key-       */
+/*        word1 or keyword2 / keyword1 and keyword2                  */
+/*        The user can also set the prefix of the members to be      */
+/*        searched for                                               */
+/*                                                                   */
+/* Usage : tso srchx '<search-strings>' {prefix}                     */
+/*         where '<search-strings>' (quotes mandatory) contains      */
+/*         the list of keywords to search                            */
+/*                                                                   */
+/*                                                                   */
+/*                                                                   */
+/*       Eg 1: tso srchx 'string1 & string2' COPY*                   */
+/*             will return members from the current library that     */
+/*             start with COPY and contain the strings "string1"     */
+/*             and "string2"                                         */
+/*       Eg 2: tso srchx 'string1 | string2'                         */
+/*             will return members from the current library that     */
+/*             contain either the string "string1" or "string2"      */
+/*                                                                   */
+/*------------------------------+-----------------+------------------*/
+/* Author - Badal Bansal                                             */
+/* Version - V1.0              Language - REXX                       */
+/* Purpose - An advanced search utility for PDS libraries            */
+/*------------------------------+------------------------------------*/
+/*                                                                   */
+/* NOTE: Some code taken from SCANPDS (by Doug Nadel)                */
+/*                                                                   */
+/*------------------------------+------------------------------------*/
+/* - - > M O D  L O G < - -                                          */
+/*                                                                   */
+/*                                                                   */
+/*                                                                   */
+/*                                                                   */
+/*                                                                   */
+/*                                                                   */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*> Begin Utility                                                   <*/
+quotetable = '7D7F'x          /* 7D - singlequote, 7F - double quote */
+/* Set Generic Flags here                                            */
+filesNotFreed = 'N'
+/*> Validate Input Section                                          <*/
+parse ARG UsrInp
+/* Check if user has turned on Debug Mode                            */
+If substr(UsrInp,1,2) = '-I' Then Do
+   Trace (?R)
+   UsrInp = substr(UsrInp,3)
+End
+/* Obtain Current PDS                                                */
+Address ISPEXEC VGET (ZDLDSN) SHARED
+If strip(ZDLDSN) = '' Then Do
+   errMsg1 = ' You are not in the member listing of the PDS.'
+   errMsg2 = ' Navigate to the PDS to search in and try again.'
+   ex_rc = 8
+   signal rexxexit
+End
+qdsn = "'" || ZDLDSN || "'"
+call parseInp
+/* Flow will resume here only if the Input is valid                  */
+/* Build the SRCHFOR strings as well as the SELECT parameters        */
+str01 = Translate(str01,,quotetable)                /* Remove Quotes */
+str02 = Translate(str02,,quotetable)
+str03 = Translate(str03,,quotetable)
+srchInp.1.0 = 0
+srchInp.2.0 = 0
+srchInp.3.0 = 0
+If str02 = '' & str03 = '' Then Do                  /* A             */
+   srchTimes = 1
+   srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+   temp = srchInp.srchTimes.0
+   srchInp.srchTimes.temp = "SRCHFOR  '" || str01 || "'"
+End
+If or01 <> '' Then Do                               /* A | B ...     */
+   srchTimes = 1
+   srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+   temp = srchInp.srchTimes.0
+   srchInp.srchTimes.temp = "SRCHFOR  '" || str01 || "'"
+   srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+   temp = srchInp.srchTimes.0
+   srchInp.srchTimes.temp = "SRCHFOR  '" || str02 || "'"
+   If or02 <> '' Then Do                            /* A | B | C     */
+      srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+      temp = srchInp.srchTimes.0
+      srchInp.srchTimes.temp = "SRCHFOR  '" || str03 || "'"
+   End
+   If an02 <> '' Then Do                            /* A | B & C     */
+      srchTimes = 2
+      srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+      temp = srchInp.srchTimes.0
+      srchInp.srchTimes.temp = "SRCHFOR  '" || str03 || "'"
+   End
+End
+If an01 <> '' Then Do                               /* A & B ...     */
+   srchTimes = 1
+   srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+   temp = srchInp.srchTimes.0
+   srchInp.srchTimes.temp = "SRCHFOR  '" || str01 || "'"
+   srchTimes = 2
+   srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+   temp = srchInp.srchTimes.0
+   srchInp.srchTimes.temp = "SRCHFOR  '" || str02 || "'"
+   If or02 <> '' Then Do                            /* A & B | C     */
+      srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+      temp = srchInp.srchTimes.0
+      srchInp.srchTimes.temp = "SRCHFOR  '" || str03 || "'"
+   End
+   If an02 <> '' Then Do                            /* A & B & C     */
+      srchTimes = 3
+      srchInp.srchTimes.0 = srchInp.srchTimes.0 + 1
+      temp = srchInp.srchTimes.0
+      srchInp.srchTimes.temp = "SRCHFOR  '" || str03 || "'"
+   End
+End
+srchLoop = srchTimes
+srchTimes = 1
+Do while srchTimes <= srchLoop
+   call callSRCH
+   srchTimes = srchTimes + 1
+End
+/* Default Flow Through Logic reaches here                           */
+ex_rc = 0
+signal rexxexit
+/*>- - - - S U B  R O U T I N E S                          - - - - -<*/
+/* parseInp: Used to validate the input provided to utility          */
+/* BldMbrs : Build the mbrList Stem for parameters                   */
+/* callSRCH: Call ISRSUPC utility                                    */
+/*                                                                   */
+/* Subroutine - parseInp                                             */
+parseInp:
+   /* Build Panel & get parameters                                   */
+   a = 1
+   Address TSO
+     'ALLOC NEW DEL F($UPDPAN) DSO(PO) DIR(1) SP(3,3) TRACK
+         REUSE RECFM(F B) BLKSIZE(0) LRECL(80)'
+   Do Until substr(line,1,7)='/*PANEL'
+      line = sourceline(a)
+      a=a+1
+   End
+   Parse Var line . panelname .
+   Address ispexec
+   'LMINIT DATAID(TMPPNL) ENQ(EXCLU) DDNAME($UPDPAN)'
+   'LMOPEN DATAID('tmppnl') OPTION(OUTPUT)'
+   Do Until substr(line,1,4)=')END'
+      line = sourceline(a)
+      'LMPUT DATAID(&TMPPNL) MODE(INVAR) DATALOC(LINE) DATALEN(80)'
+      a=a+1
+   End
+   'LMMADD DATAID(&TMPPNL) MEMBER('panelname')'
+   'LMFREE DATAID(&TMPPNL)'
+   'LIBDEF ISPPLIB LIBRARY ID($UPDPAN) STACK'
+   panErr = ''
+reDisp:
+   'ADDPOP'
+   'DISPLAY PANEL('panelname')'
+   'REMPOP'
+   /* Check the inputs provided by the User                          */
+   str01 = strip(str01) /* Remove leading & trailing spaces */
+   str02 = strip(str02)
+   str03 = strip(str03)
+   an01 = strip(an01)
+   an02 = strip(an02)
+   or01 = strip(or01)
+   or02 = strip(or02)
+   If (an01 <> '' & or01 <> '') |,
+      (an02 <> '' & or02 <> '') Then Do
+      curp = 'an01'
+      panErr = 'Choose one of the options "and", "or"'
+      signal reDisp
+   End
+   If (an01 <> '' | or01 <> '') &,
+      str02 = '' Then Do
+      curp = 'str02'
+      panErr = 'Enter data in second search string'
+      signal reDisp
+   End
+   If (an02 <> '' | or02 <> '') &,
+      str03 = '' Then Do
+      curp = 'str03'
+      panErr = 'Enter data in third search string'
+      signal reDisp
+   End
+   If str03 <> '' & str02 = '' Then Do
+      curp = 'str02'
+      panErr = 'Second Search string is empty'
+      signal reDisp
+   End
+   If str02 <> '' & an01 = '' & or01 = '' Then Do
+      curp = 'an01'
+      panErr = 'Choose Operator for Second string'
+      signal reDisp
+   End
+   If str03 <> '' & an02 = '' & or02 = '' Then Do
+      curp = 'an01'
+      panErr = 'Choose Operator for Second string'
+      signal reDisp
+   End
+   'LIBDEF ISPPLIB '
+   Address TSO
+   'FREE F($UPDPAN)'
+   /*                                                                */
+   /* Find number of runs/segments to search.                        */
+   /* Check if the wildcard for member name is specified             */
+   mbrList.0 = 0
+   If pos('*',mbrMask) > 0 Then Do
+      membFilter = mbrMask
+      call BldMbrs
+   End
+Return
+/*                             Build the mbrList Stem for parameters */
+BldMbrs:
+   /* Create Memberlist for SRCHFOR. Updates a reusable stem         */
+   idx = 0
+   drop mbrList.
+   Address ISPEXEC
+   "LMINIT Dataid(HayStack) Dataset("qdsn") Enq(SHR)"
+   If rc > 0 Then Do
+      errMsg1 = ' Unable to allocate Search PDS. Close all screens that'
+      errMsg2 = ' are accessingthis PDS/Logoff & Login to try again'
+      ex_rc = 4
+      signal rexxexit
+   End
+   "LMOPEN Dataid("HayStack")"
+   eoPDS = 'N'
+   Do while eoPDS = 'N'
+      "LMMLIST Dataid("Haystack") OPTION(LIST) STATS(NO)",
+      "MEMBER(memName) PATTERN("membFilter")"
+      If rc >= 4 Then do
+         eoPDS = 'Y'
+         Leave
+      End
+      idx = idx + 1
+      mbrList.idx = memName
+   End
+   mbrList.0 = idx
+   "LMMLIST Dataid("Haystack") OPTION(free)"
+   "LMCLOSE Dataid("Haystack")"
+   "LMFREE Dataid("Haystack")"
+Return
+/*                                              Call ISRSUPC utility */
+callSRCH:
+   /* Empty out any data queued so far                               */
+   Do queued()
+      pull
+   End
+   idx = 1
+   Do While idx <= srchInp.srchTimes.0
+      Queue srchInp.srchTimes.idx
+      idx = idx + 1
+   End
+   idx = 1
+   Do While idx <= mbrList.0
+      Queue 'SELECT ' || mbrList.idx
+      idx = idx + 1
+   End
+   Address TSO
+   "ALLOC F(SYSIN) REUSE NEW DEL LRECL(80) RECFM(F B)
+    SPACE(10,10) TRACK RELEASE DSO(PS) BLKSIZE(80)"
+   Address TSO "EXECIO" queued() "DISKW SYSIN (FINIS"
+   "ALLOC F(NEWDD) DA("qdsn") SHR REUSE"
+   rdd = '$'right(time(s),7,'0')
+   "ALLOC F("rdd") DA("qdsn") SHR REUSE"
+   "ALLOC F(OUTDD) REUSE NEW DEL LRECL(80) RECFM(F B)
+   SPACE(10,10) TRACK RELEASE DSO(PS)"
+   supparm = "SRCHCMP,ANYC,LMTO,NOSUMS,NOPRTCC,CKPACKL"
+   Address ISPEXEC
+   'SELECT PGM(ISRSUPC) PARM(&SUPPARM)'
+   supercrc = rc
+   If supercrc=1 Then Do
+      If srchTimes = srchLoop Then Do
+         call FinDisp
+      End
+      Else Do
+         idx = 0
+         drop mbrList.
+         Address TSO
+         "EXECIO * DISKR OUTDD (FINIS STEM MEM."
+         Do a = 6 to mem.0
+            idx = idx + 1
+            Parse Var mem.a mbrList.idx .
+         End                          /* End for 'Do a=6' */
+         mbrList.0 = idx
+         Address tso 'FREE F(NEWDD SYSIN OUTDD)'
+      End
+   End
+   Else Do
+      zerrsm='String not found'
+      If an01 = '' Then op01 = ' or ' Else op01 = ' and '
+      If an02 = '' Then op02 = ' or ' Else op02 = ' and '
+      If str02 = '' Then op01 = ''
+      If str03 = '' Then op02 = ''
+      inparms = str01 || op01 || str02 || op02 || str03
+      zerrlm='The string "'inparms'" was not found in any members.'
+      zerrhm='*'
+      zerralrm='YES'
+      Address ispexec 'SETMSG MSG(ISRZ002)'
+      address tso 'FREE F(NEWDD SYSIN OUTDD)'
+      /* Irrespective of the search iteration, stop                  */
+      srchTimes = srchLoop
+   End
+   Address TSO "FREE F("rdd")"
+Return
+/*                                       Display the list of members */
+FinDisp:
+   Address TSO
+      "EXECIO * DISKR OUTDD (FINIS STEM MEM."
+   Address ispexec
+      "CONTROL ERRORS RETURN"
+      "LMINIT DATAID(DATAID) DDNAME("rdd") ENQ(SHR)"
+      "LMOPEN DATAID("dataid")"
+      "CONTROL NONDISPL END"
+   zerrsm='Found in 'mem.0-5' members'
+   If an01 = '' Then op01 = ' or ' Else op01 = ' and '
+   If an02 = '' Then op02 = ' or ' Else op02 = ' and '
+   If str02 = '' Then op01 = ''
+   If str03 = '' Then op02 = ''
+   inparms = str01 || op01 || str02 || op02 || str03
+   zerrlm='The string "'inparms'" was found in 'mem.0-5' members.'
+   zerrhm='*'
+   zerralrm='NO'
+   Address ispexec 'SETMSG MSG(ISRZ002)'
+   option='DISPLAY) COMMANDS(ANY'
+   zcmd = ''
+   Do a=6 to mem.0
+      Parse Var mem.a member .
+      'LMMDISP DATAID('dataid') OPTION('option') ',
+                               'MEMBER('member')'
+      If rc<=8 Then             /* ignore bad names for now  */
+         option='ADD'
+      Else
+         'CONTROL NONDISPL END' /* don't display next attempt*/
+   End                          /* End for 'Do a=6' */
+   Address tso 'FREE F(NEWDD SYSIN OUTDD)'
+   zlmember=''
+   Do Until disprc > 0
+      'LMMDISP DATAID('dataid')  OPTION(DISPLAY) COMMANDS(ANY) ,
+               TOP('zlmember')'
+      disprc = rc
+      If disprc = 0 & zlmember \= '' Then Do
+         service = ''
+         SELECT
+            When (zllcmd='V') Then service='VIEW'
+            When (zllcmd='B') Then service='BROWSE'
+            When (zllcmd='S') Then service='VIEW'
+            When (zllcmd='/') Then service='EDIT'
+            When (zllcmd='E') Then service='EDIT'
+            Otherwise
+               Do
+               zerrsm='Invalid command:'zllcmd
+               zerrlm='Use B for BROWSE, V for VIEW or E, S or / for EDIT.'
+               zerrhm='*'
+               zerralrm='YES'
+               Address ispexec 'SETMSG MSG(ISRZ002)'
+               End
+         End
+         If service \= '' Then Do
+            service 'DATAID('dataid') MEMBER('zlmember')'
+            If rc>=12 Then 'SETMSG MSG(ISRZ002)'
+         End
+      End
+   End
+   'LMMDISP DATAID('dataid')  OPTION(FREE)'
+   'LMFREE DATAID('dataid')'
+Return
+/*                                            Generic Exit Paragraph */
+rexxexit:
+/* Generic Exit Paragraph.                                           */
+If datatype(ex_rc) <> 'NUM' Then
+Do
+  ex_rc = 0
+End
+Else Do
+   If errMsg1 <> 'ERRMSG1' & errMsg2 <> 'ERRMSG2' Then Do
+      say ' - - - - - - - - - - - - - - - - - - - - - - / / E R R O R /'
+      say errMsg1
+      say errMsg2
+      say ' Exiting with RC ==>' ex_rc
+      say ' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'
+   End
+End
+/* If any files opened/allocated close them here                     */
+If filesNotFreed = 'Y' Then Do
+End
+Exit ex_rc
+/* Do not edit the comments below. This is the structure of the panel */
+/*+  Member Mask/Pattern : ?mbrMask +     */
+/*PANEL SRCHINP
+)ATTR
+ @ type(pt) skip(on)
+ + type(nt) skip(on)
+ ! type(output) color(red) caps(off) skip(on)
+ ? type(input) color(yellow) pad('_')
+)BODY window(70,12)
++               @Search eXtra +(A Rexx Utility)                 +
++
++  Search Strings                                                    +
++                1 : ?str01                                   +
++ ?z+And ?z+Or   2 : ?str02                                   +
++ ?z+And ?z+Or   3 : ?str03                                   +
++
++
++ !panErr
++
++               Enter Search strings and press @Enter
+)INIT
+VGET (CURP) SHARED
+.CURSOR = &CURP
+.ZVARS = '(an01 or01 an02 or02)'
+)REINIT
+VGET (CURP) SHARED
+.CURSOR = &CURP
+)PROC
+VER (&str01,NONBLANK)
+)END
+*/
+
